@@ -2,6 +2,7 @@ package com.CrudRestfulApi.emsbackend.service.impl;
 
 import com.CrudRestfulApi.emsbackend.dto.EmployeeDto;
 import com.CrudRestfulApi.emsbackend.entity.Employee;
+import com.CrudRestfulApi.emsbackend.exception.ResourceNotFoundException;
 import com.CrudRestfulApi.emsbackend.mapper.EmployeeMapper;
 import com.CrudRestfulApi.emsbackend.repository.EmployeeRepository;
 import com.CrudRestfulApi.emsbackend.service.EmployeeService;
@@ -21,8 +22,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeDto getEmployee(Long employeeId){
+    public EmployeeDto getEmployeeById(Long employeeId){
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ResourceNotFoundException("There is no Employee found with the given Id: " + employeeId));
 
-        return null;
+        return EmployeeMapper.mapToEmployeeDto(employee);
     }
 }
